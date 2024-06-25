@@ -1,0 +1,16 @@
+{
+    "name": "minuz/loing",
+    "description": "Simple streaming app",
+    "autoload": {
+        "psr-4": {
+            "Minuz\\Loing\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Angelium-Eddra",
+            "email": "angelium.eddra1972@gmail.com"
+        }
+    ],
+    "require": {}
+}
