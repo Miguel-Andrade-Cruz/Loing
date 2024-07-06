@@ -1,8 +1,8 @@
 <?php
 
-namespace Minuz\Loing\File;
+namespace Minuz\Loing\Model\File;
 
-class File
+abstract class File
 {
     public const EXTENSION = '.mix';
     
@@ -11,6 +11,6 @@ class File
 
     public function __construct(string $filename)
     {
-        $this->filename = $filename . self::EXTENSION;
+        $this->filename = $filename . static::EXTENSION;
     }
 }

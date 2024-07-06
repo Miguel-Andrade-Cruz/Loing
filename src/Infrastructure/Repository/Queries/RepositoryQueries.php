@@ -1,6 +1,6 @@
 <?php
 
-namespace Minuz\Loing\REpository;
+namespace Minuz\Loing\Infrastructure\Repository\Queries;
 
 class RepositoryQueries
 {
@@ -34,13 +34,9 @@ class RepositoryQueries
         
         videos.VideoFile,
         
-        interaction.views,
-        interaction.likes,
-        interaction.dislikes,
-        
-        comments.Publisher,
-        comments.Comment,
-        comments.CommentDate
+        interaction.Views,
+        interaction.Likes,
+        interaction.Dislikes
     FROM
         loingdb.videos videos
 
@@ -54,41 +50,49 @@ class RepositoryQueries
     ON
         interaction.Link = videos.Link
 
-    LEFT JOIN
-        loingdb.comments comments
-    ON
-        comments.Link = search.Link
-
     WHERE
         videos.Link = '{ | }'
     ;
     ";
-// -------------------------------------------------------
+    // -------------------------------------------------------
+
+
+    public const SEARCH_VIDEO_COMMENTS = 
+    "
+    SELECT Publisher, Comment, CommentDate FROM loingdb.comments
+    WHERE Link = '{ | }'
+    ;	
+    ";
 
 
 
+    // UPLOAD VIDEO QUERIES
+    // -------------------------------------------------------
+    public const UPLOAD_VIDEO_QUERY = 
+    "
+    INSERT INTO loingdb.videos (Link, VideoFile)
+    VALUES
+    ('{ link }', '{ video }')
+    ;
+    INSERT INTO loingdb.comments (Link)
+    VALUES ('{ link }')
+    ;
+    INSERT INTO loingdb.interaction (Link)
+    VALUES ('{ link }')
+    ;
 
-// UPLOAD VIDEO QUERIES
-// -------------------------------------------------------
-public const UPLOAD_VIDEO_QUERY = 
-"
-INSERT INTO loingdb.videos (Link, VideoFile)
-VALUES
-('$link', '$content')
-;
-
-";
+    ";
 
 
 
-public const UPLOAD_SEARCH_MAP_QUERY = "
-INSERT INTO loingdb.search_map (Link, Title, Channel, Hashtags)
-VALUES
-('{ | }', '{ | }', '{ | }', '{ | }')
-;
+    public const UPLOAD_SEARCH_MAP_QUERY = "
+    INSERT INTO loingdb.search_map (Link, Title, Channel, Hashtags)
+    VALUES
+    ('{ | }', '{ | }', '{ | }', '{ | }')
+    ;
 
-";
-// -------------------------------------------------------
+    ";
+    // -------------------------------------------------------
 
 
 
@@ -101,9 +105,18 @@ VALUES
 
 
 
-    public static function searchByLinkQuery(string $link): string
+    public static function searchVideoQuery(string $link): string
     {
         $query = str_replace('{ | }', $link, self::SEARCH_VIDEO_QUERY);
+
+        return $query;
+    }
+
+
+
+    public static function searchCommentVideoQuery(string $link): string
+    {
+        $query = str_replace('{ | }', $link, self::SEARCH_VIDEO_COMMENTS);
 
         return $query;
     }
@@ -115,7 +128,9 @@ VALUES
         $videoData = [$video['Link'], $video['VideoFile']];
         $searchMapData = [$video['Link'], $video['Title'], $video['Channel'], $video['Hashtags']];
 
-        $videoFileQuery = str_replace('{ | }', $videoData, self::UPLOAD_VIDEO_QUERY);
+        $videoFileQuery = str_replace('{ link }', $videoData['Link'], self::UPLOAD_VIDEO_QUERY);
+        $videoFileQuery = str_replace('{ vieo }', $videoData['VideoFile'], self::UPLOAD_VIDEO_QUERY);
+        
         $searchMapQuery = str_replace('{ | }', $searchMapData, self::UPLOAD_SEARCH_MAP_QUERY);
 
         $videoQuery = $videoFileQuery . $searchMapQuery;

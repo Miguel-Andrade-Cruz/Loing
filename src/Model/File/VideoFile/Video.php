@@ -1,8 +1,8 @@
 <?php
 
-namespace Minuz\Loing\VideoFile;
+namespace Minuz\Loing\Model\VideoFile;
 
-use Minuz\Loing\File\File;
+use Minuz\Loing\Model\File\File;
 
 class Video extends File
 {

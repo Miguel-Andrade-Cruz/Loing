@@ -1,6 +1,6 @@
 <?php
 
-namespace Minuz\Loing\Interactions\Comment;
+namespace Minuz\Loing\Model\Interactions\Comment;
 
 class Comment
 {
@@ -25,9 +25,12 @@ class Comment
         $pastTime = $pastTime->format('%d days ago');
         
         return <<<EOL
-        $this->publisher said $pastTime:
+        
+        | $this->publisher said $pastTime:
+        |
+        | $this->comment
 
-        $this->comment
+
         EOL;
     }
 
