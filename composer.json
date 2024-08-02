@@ -3,7 +3,8 @@
     "description": "Simple streaming app",
     "autoload": {
         "psr-4": {
-            "Minuz\\Loing\\": "src/"
+            "Minuz\\Loing\\": "src/",
+            "Minuz\\Api\\" : "api/"
         }
     },
     "authors": [

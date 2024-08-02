@@ -7,5 +7,6 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Minuz\\Loing\\' => array($baseDir . '/src'),
+    'Minuz\\Api\\' => array($baseDir . '/api'),
     'Ds\\' => array($vendorDir . '/php-ds/php-ds/src'),
 );

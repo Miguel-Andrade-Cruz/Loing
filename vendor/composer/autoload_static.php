@@ -10,6 +10,7 @@ class ComposerStaticInit5dd91d109b7f2976c34fa726c6427b8a
         'M' => 
         array (
             'Minuz\\Loing\\' => 12,
+            'Minuz\\Api\\' => 10,
         ),
         'D' => 
         array (
@@ -22,6 +23,10 @@ class ComposerStaticInit5dd91d109b7f2976c34fa726c6427b8a
         array (
             0 => __DIR__ . '/../..' . '/src',
         ),
+        'Minuz\\Api\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/api',
+        ),
         'Ds\\' => 
         array (
             0 => __DIR__ . '/..' . '/php-ds/php-ds/src',
@@ -30,6 +35,39 @@ class ComposerStaticInit5dd91d109b7f2976c34fa726c6427b8a
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'Ds\\Collection' => __DIR__ . '/..' . '/php-ds/php-ds/src/Collection.php',
+        'Ds\\Deque' => __DIR__ . '/..' . '/php-ds/php-ds/src/Deque.php',
+        'Ds\\Hashable' => __DIR__ . '/..' . '/php-ds/php-ds/src/Hashable.php',
+        'Ds\\Map' => __DIR__ . '/..' . '/php-ds/php-ds/src/Map.php',
+        'Ds\\Pair' => __DIR__ . '/..' . '/php-ds/php-ds/src/Pair.php',
+        'Ds\\PriorityQueue' => __DIR__ . '/..' . '/php-ds/php-ds/src/PriorityQueue.php',
+        'Ds\\Queue' => __DIR__ . '/..' . '/php-ds/php-ds/src/Queue.php',
+        'Ds\\Sequence' => __DIR__ . '/..' . '/php-ds/php-ds/src/Sequence.php',
+        'Ds\\Set' => __DIR__ . '/..' . '/php-ds/php-ds/src/Set.php',
+        'Ds\\Stack' => __DIR__ . '/..' . '/php-ds/php-ds/src/Stack.php',
+        'Ds\\Traits\\Capacity' => __DIR__ . '/..' . '/php-ds/php-ds/src/Traits/Capacity.php',
+        'Ds\\Traits\\GenericCollection' => __DIR__ . '/..' . '/php-ds/php-ds/src/Traits/GenericCollection.php',
+        'Ds\\Traits\\GenericSequence' => __DIR__ . '/..' . '/php-ds/php-ds/src/Traits/GenericSequence.php',
+        'Ds\\Traits\\SquaredCapacity' => __DIR__ . '/..' . '/php-ds/php-ds/src/Traits/SquaredCapacity.php',
+        'Ds\\Vector' => __DIR__ . '/..' . '/php-ds/php-ds/src/Vector.php',
+        'Minuz\\Api\\core\\messaging\\Request' => __DIR__ . '/../..' . '/api/core/messaging/Request.php',
+        'Minuz\\Api\\core\\messaging\\Response' => __DIR__ . '/../..' . '/api/core/messaging/Response.php',
+        'Minuz\\Loing\\Config\\AccountAccess\\AccountAccess' => __DIR__ . '/../..' . '/src/Config/AccountAccess/AccountAccess.php',
+        'Minuz\\Loing\\DataBase\\Library\\MailServer' => __DIR__ . '/../..' . '/src/DataBase/Library/MailServer.php',
+        'Minuz\\Loing\\DataBase\\Library\\MailServerQueries' => __DIR__ . '/../..' . '/src/DataBase/Library/MailServerQueries.php',
+        'Minuz\\Loing\\DataBase\\Safe\\Safe' => __DIR__ . '/../..' . '/src/DataBase/Safe/Safe.php',
+        'Minuz\\Loing\\DataBase\\VideoServer\\VideoServer' => __DIR__ . '/../..' . '/src/DataBase/VideoServer/VideoServer.php',
+        'Minuz\\Loing\\DataBase\\VideoServer\\VideoServerQueries' => __DIR__ . '/../..' . '/src/DataBase/VideoServer/VideoServerQueries.php',
+        'Minuz\\Loing\\Model\\Account\\Account' => __DIR__ . '/../..' . '/src/Model/Account/Account.php',
+        'Minuz\\Loing\\Model\\Account\\Email\\Email' => __DIR__ . '/../..' . '/src/Model/Account/Email/Email.php',
+        'Minuz\\Loing\\Model\\Account\\Email\\Mail' => __DIR__ . '/../..' . '/src/Model/Account/Email/Mail.php',
+        'Minuz\\Loing\\Model\\Content\\Interact\\Comment' => __DIR__ . '/../..' . '/src/Model/Content/Interact/Comment.php',
+        'Minuz\\Loing\\Model\\Content\\Interact\\RateableMethods' => __DIR__ . '/../..' . '/src/Model/Content/Interact/RateableMethods.php',
+        'Minuz\\Loing\\Model\\Content\\Interact\\Rating' => __DIR__ . '/../..' . '/src/Model/Content/Interact/Rating.php',
+        'Minuz\\Loing\\Model\\Content\\Video\\Video' => __DIR__ . '/../..' . '/src/Model/Content/Video/Video.php',
+        'Minuz\\Loing\\Model\\Files\\File' => __DIR__ . '/../..' . '/src/Model/Files/File.php',
+        'Minuz\\Loing\\Model\\Files\\Post' => __DIR__ . '/../..' . '/src/Model/Files/Post.php',
+        'Minuz\\Loing\\Model\\Files\\Video' => __DIR__ . '/../..' . '/src/Model/Files/Video.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
