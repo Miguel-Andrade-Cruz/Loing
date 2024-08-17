@@ -2,69 +2,52 @@
 
 namespace Minuz\Api\Model\Account;
 
+use Minuz\Api\Config\Statements\StatementConfig;
+use Minuz\Api\Repository\DataCenter\DataCenter;
 use Minuz\Api\Repository\Safe\Safe;
 use Minuz\Api\Model\Account\Email\Email;
 
 class Account
 {
-    private Safe $repository;
+    private DataCenter $cloud;
 
     protected Email $email;
 
     public readonly string $nickName;
 
 
-    public function __construct()
+    public function __construct(string $email, string $nickName)
     {
-        $this->repository = new Safe();
+        $this->nickName = $nickName;
+        $this->email = new Email($email);
+
+        $this->cloud = new DataCenter();
+    }
+
+
+    public function searchVideo(string $search): array
+    {
+        return $this->cloud->search($search);
     }
 
 
 
-    public function Login(string $email, string $password): array|bool
+    public function email(): string
     {
-        $data = $this->repository->Login($email, $password);
-        
-        if ( ! $data ) {
-            return false;
-        }
-        $this->nickName = $data['nickname'];
-        $this->email = new Email($data['email']);
-
-        return ['nickname' => $this->nickName, 'email' => (string) $this->email];
+        return $this->email;
     }
 
 
 
-    public function SignUp(string $nickName, string $email, string $password): array|bool
-    {
-        $sucess = $this->repository->SignUp($nickName, $email, $password);
-
-        if ( ! $sucess ) {
-            return false;
-        }
-
-        return $this->Login($email, $password);
-    }
-
-
-
-    public function viewLastMail(): string
-    {
-        return $this->email->viewLastMail();
-    }
-
-
-
-    public function viewAllMails(): string
+    public function viewAllMails(): array
     {
         return $this->email->viewAllMails();
     }
 
 
 
-    public function sendMail(string $reciever, string $text)
+    public function sendMail(string $reciever, string $text, string $date): void
     {
-        $this->email->sendMail($reciever, $text);
+        $this->email->sendMail($reciever, $text, $date);
     }
 }

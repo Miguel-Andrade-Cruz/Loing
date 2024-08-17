@@ -1,27 +1,10 @@
 <?php
 
-use Minuz\Api\Requester\Requester;
-use Minuz\Api\Responser\Responser;
-use Minuz\Api\router\Router;
-
 require_once '../vendor/autoload.php';
+require_once '../Api/Routes/Routes.php';
 
+use Minuz\Api\Core\Core;
+use Minuz\Api\Http\Router;
 
-$request = new Requester();
+Core::dispatch(Router::$routes);
 
-$controllerClass = Router::Redirect($request::Route());
-
-
-if ( $controllerClass == false ) {
-    Responser::Response([
-        'message' => 'Error'
-    ]);
-}
-
-
-
-$controller = new $controllerClass($request::Request());
-
-$response = $controller->Processor();
-
-Responser::Response($response);

@@ -3,34 +3,12 @@
 namespace Minuz\Api\Repository\Safe;
 
 use Minuz\Api\Config\Connection\ConnectionCreator;
+use Minuz\Api\Config\PDOQueries\PDOQueries;
+use Minuz\Api\Model\Account\Account;
 
 class Safe
 {
     protected static \PDO $pdo;
-
-    private const LOGIN_QUERY = 
-    "
-    SELECT nickname, email FROM loingdb.accounts acc
-    WHERE acc.email = ':email'
-    AND acc.password = ':password';
-    "
-    ;
-
-
-    private const SIGN_UP_CHECK =
-    "
-    SELECT COUNT(*) FROM loingdb.accounts acc
-    WHERE acc.email = :email; 
-    "
-    ;
-
-
-    private const SIGN_UP_QUERY = 
-    "
-    INSERT INTO loingdb.accounts (nickname, email, password)
-    VALUES (:nickname, :email, :password);
-    "
-    ;
 
 
     public function __construct()
@@ -40,39 +18,42 @@ class Safe
 
 
 
-    public function Login(string $email, string $password): array|false
+    public function Login(string $email, string $password): Account|false
     {
-        $filled_query = self::queryFiller(
-            self::LOGIN_QUERY,
+        $filledQuery = self::queryFiller(
+            PDOQueries::LOGIN_QUERY,
             [':email', ':password'],
             [$email, $password]
         );
 
-        $accountData = self::$pdo->query($filled_query)->fetch(\PDO::FETCH_ASSOC);
-        if ( ! $accountData ) {
+        $accData = self::$pdo->query($filledQuery)->fetch(\PDO::FETCH_ASSOC);
+        if ( ! $accData ) {
             return false;
         }
         
-        return $accountData;
+        return new Account($accData['email'], $accData['nickname']);
     }
 
 
 
-    public function SignUp(string $nickName, string $email, string $password): bool
+    public function SignUp(string $nickName, string $email, string $password): Account|false
     {
-        $checking = self::$pdo->prepare(self::SIGN_UP_CHECK)->execute([':email' => $email]);
-        if ( $checking == 1) {
+        $filledQuery = self::queryFiller(PDOQueries::SIGN_UP_CHECK_QUERY, [':email'], [$email]);
+        $checking = self::$pdo->query($filledQuery)->fetch(\PDO::FETCH_ASSOC);
+        $checking = $checking['checking'];
+
+        if ( $checking == 1 ) {
             return false;
         }
 
-        self::$pdo->prepare(self::SIGN_UP_QUERY)
+        self::$pdo->prepare(PDOQueries::SIGN_UP_QUERY)
             ->execute([
                 ':nickname' => $nickName,
                 ':email' => $email,
                 ':password' => $password
             ]);
         
-        return true;
+        return $this->Login($email, $password);
     }
 
 

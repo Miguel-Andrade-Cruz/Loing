@@ -15,11 +15,8 @@ class Email
 
     public function __construct(string $email)
     {
-        if ( ! filter_var($email, FILTER_VALIDATE_EMAIL)){
-            throw new \DomainException('Formato de email inválido');
-        }
+        $this->emailAdress = filter_var($email, FILTER_VALIDATE_EMAIL);
 
-        $this->emailAdress = $email;
         $this->stock = new MailServer();
     }
 
@@ -32,37 +29,38 @@ class Email
 
 
 
-    public function sendMail(string $reciever, string $text): void
+    public function sendMail(string $reciever, string $text, string $date): void
     {
-        $today = new \DateTime('now');
-        $mail = new Mail($this->emailAdress, $reciever, $text, $today->format('Y-m-d'));
+        $mail = new Mail($this->emailAdress, $reciever, $text, $date);
         
+        $this->stock->sendMail($mail);
     }
 
 
 
-
-
-
-    public function viewAllMails(): string
+    public function viewAllMails(): array
     {
-        $mails = '';
+        $this->update();
+        $mails = [];
+
+        if ( $this->mailBox->isEmpty()) {
+            return [
+                'Your inbox is empty.'
+            ];
+        }
         
         while ( ! $this->mailBox->isEmpty() ) {
-            $mails . $this->mailBox->pop();
+            $mail = $this->mailBox->pop();
+            $mails[] = $mail->read();
         }
-        $mails . PHP_EOL . 'Caixa de entrada vazia';
         
         return $mails;
     }
-    
-    
-    
-    public function viewLastMail(): string
+
+
+
+    private function update()
     {
-        if ( $this->mailBox->isEmpty() ) {
-            return "Caixa de entrada vazia";
-        }
-        return $this->mailBox->pop();
+        $this->mailBox = $this->stock->pullMails($this->emailAdress);
     }
 }

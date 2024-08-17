@@ -1,10 +1,10 @@
 <?php
 
-namespace Minuz\Api\core\resources;
+namespace Minuz\Api\Services;
 
 use Minuz\Api\Model\Account\Account;
 
-class Login
+class Acess
 {
 
 

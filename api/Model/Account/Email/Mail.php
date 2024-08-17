@@ -5,28 +5,35 @@ namespace Minuz\Api\Model\Account\Email;
 
 class Mail
 {
-    public readonly \DateTimeImmutable $date;
-
+    private \DateTimeImmutable $date;
 
     public function __construct(
-        public readonly string $sender,
-        public readonly string $reciever,
-        public readonly string $text,
-        string $date
+        private string $sender,
+        private string $reciever,
+        private string $text,
+                string $date
     ) {
         $this->date = new \DateTimeImmutable($date);
     }
 
 
 
-    public function __tostring()
+    private function formatDate(): string
     {
-        $date = $this->date->format('d/m/Y');
+        return $this->date->format('d/m/Y');
+    }
 
-        return <<<EOL
-        $this->sender Sended to you at $date:
-        
-        $this->text
-        EOL;
+
+
+    public function read(): array
+    { 
+        $mail = [
+            'date' => $this->date->format('Y-m-d'),
+            'sender' => $this->sender,
+            'reciever' => $this->reciever,
+            'text' => $this->text
+        ];
+
+        return $mail;
     }
 }
