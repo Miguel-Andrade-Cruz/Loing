@@ -3,7 +3,6 @@
 namespace Minuz\Api\Repository\Safe;
 
 use Minuz\Api\Config\Connection\ConnectionCreator;
-use Minuz\Api\Config\PDOQueries\PDOQueries;
 use Minuz\Api\Model\Account\Account;
 
 class Safe
@@ -20,13 +19,13 @@ class Safe
 
     public function Login(string $email, string $password): Account|false
     {
-        $filledQuery = self::queryFiller(
-            PDOQueries::LOGIN_QUERY,
-            [':email', ':password'],
-            [$email, $password]
-        );
+        $stmt = self::$pdo->prepare(self::$LOGIN_QUERY);
+        $stmt->execute([
+            ':email' => $email,
+            ':password' => $password
+        ]);
 
-        $accData = self::$pdo->query($filledQuery)->fetch(\PDO::FETCH_ASSOC);
+        $accData = $stmt->fetch(\PDO::FETCH_ASSOC);
         if ( ! $accData ) {
             return false;
         }
@@ -38,15 +37,16 @@ class Safe
 
     public function SignUp(string $nickName, string $email, string $password): Account|false
     {
-        $filledQuery = self::queryFiller(PDOQueries::SIGN_UP_CHECK_QUERY, [':email'], [$email]);
-        $checking = self::$pdo->query($filledQuery)->fetch(\PDO::FETCH_ASSOC);
+        $stmt = self::$pdo->prepare(self::$SIGN_UP_CHECK_QUERY);
+        $stmt->execute([':email' => $email]);
+        $checking = $stmt->fetch(\PDO::FETCH_ASSOC);
         $checking = $checking['checking'];
 
         if ( $checking == 1 ) {
             return false;
         }
 
-        self::$pdo->prepare(PDOQueries::SIGN_UP_QUERY)
+        self::$pdo->prepare(self::$SIGN_UP_QUERY)
             ->execute([
                 ':nickname' => $nickName,
                 ':email' => $email,
@@ -58,14 +58,28 @@ class Safe
 
 
 
-    private static function queryFiller(string $query, array $filler, array $filling): string
-    {
-        $filled_query = str_replace(
-            $filler,
-            $filling,
-            $query
-        );
+    private static string $LOGIN_QUERY = 
+    "
+    SELECT nickname, email FROM loingdb.accounts acc
+    WHERE acc.email = :email
+    AND acc.password = :password;
+    "
+    ;
 
-        return $filled_query;
-    }
+
+    private static string $SIGN_UP_CHECK_QUERY =
+    "
+    SELECT COUNT(*) AS checking
+    FROM loingdb.accounts acc
+    WHERE acc.email = :email;
+    "
+    ;
+
+
+    private static string $SIGN_UP_QUERY = 
+    "
+    INSERT INTO loingdb.accounts (nickname, email, password)
+    VALUES (:nickname, :email, :password);
+    "
+    ;
 }

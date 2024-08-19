@@ -3,7 +3,6 @@
 namespace Minuz\Api\Repository\Library;
 
 use Minuz\Api\Config\Connection\ConnectionCreator;
-use Minuz\Api\Config\PDOQueries\PDOQueries;
 use Minuz\Api\Model\Account\Email\Mail;
 
 class MailServer
@@ -22,8 +21,7 @@ class MailServer
     {
         $mailRead = $mail->read();
         
-        self::$pdo->prepare(PDOQueries::SEND_MAIL_QUERY)
-        ->execute([
+        self::$pdo->prepare(self::$SEND_MAIL_QUERY)->execute([
             ':recieverMail' => $mailRead['reciever'],
             ':senderMail'   => $mailRead['sender'],
             ':textMail'     => $mailRead['text'],
@@ -37,8 +35,9 @@ class MailServer
 
     public function pullMails(string $emailAdress): \Ds\Stack
     {
-        $filledQuery = self::queryFiller(PDOQueries::INBOX_QUERY, [':email'], [$emailAdress]);
-        $mailBox = $this->mailBoxer(self::$pdo->query($filledQuery));
+        $stmt = self::$pdo->prepare(self::$INBOX_QUERY);
+        $stmt->execute([':email' => $emailAdress]);
+        $mailBox = $this->mailBoxer($stmt);
 
         return $mailBox;
     }
@@ -64,14 +63,20 @@ class MailServer
     }
 
 
-    private static function queryFiller(string $query, array $filler, array $filling): string
-    {
-        $filled_query = str_replace(
-            $filler,
-            $filling,
-            $query
-        );
 
-        return $filled_query;
-    }
+    private static string $INBOX_QUERY = 
+    "
+    SELECT emailReciever, emailSender, text, date
+    FROM loingdb.mailbox m
+    WHERE m.emailReciever = :email;
+    "
+    ;
+
+
+    private static string $SEND_MAIL_QUERY = 
+    "
+    INSERT INTO loingdb.mailbox (emailReciever, emailSender, text, date)
+    VALUES (:recieverMail, :senderMail, :textMail, :dateMail);
+    "
+    ;
 }

@@ -5,18 +5,16 @@ use Minuz\Api\Model\Video\Rating\Rating;
 
 class Video
 {
-    public readonly string $title;
     public readonly string $link;
-    public readonly string $content;
 
-    public Rating $rating;
-
-    public function __construct(string $title, string $content, string $link, Rating $rating)
-    {
-        $this->title = $title;
-        $this->link = $link;
-        $this->content = $content;
-        $this->rating = $rating;
+    public function __construct(
+        public readonly string $title, 
+        public readonly string $content, 
+        public readonly string $channel, 
+        string $link,
+        public Rating $rating = new Rating()
+    ) {
+        $this->link = "www.loing.com/videos/" . $link;
     }
 
 
@@ -31,18 +29,6 @@ class Video
     public function dislikeIt()
     {
         $this->rating->dislikeIt();
-    }
-
-
-
-    public function thumbnail(): array
-    {
-        return [
-            'title' => $this->title,
-            'content' => $this->content,
-            'rating' => $this->rating->viewRating(),
-            'link' => $this->link,
-        ];
     }
 
 

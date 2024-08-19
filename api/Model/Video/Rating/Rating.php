@@ -4,7 +4,7 @@ namespace Minuz\Api\Model\Video\Rating;
 
 class Rating
 {
-    public function __construct(private int $likes, private int $dislikes) { }
+    public function __construct(private int $likes = 0, private int $dislikes = 0) { }
 
 
     public function likeIt()

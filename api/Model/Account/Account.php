@@ -2,10 +2,9 @@
 
 namespace Minuz\Api\Model\Account;
 
-use Minuz\Api\Config\Statements\StatementConfig;
 use Minuz\Api\Repository\DataCenter\DataCenter;
-use Minuz\Api\Repository\Safe\Safe;
 use Minuz\Api\Model\Account\Email\Email;
+use Minuz\Api\Model\Video\Video;
 
 class Account
 {
@@ -25,9 +24,23 @@ class Account
     }
 
 
+
+    public function publish(Video $video): bool
+    {
+        return $this->cloud->publish($video);
+    }
+
+
+
     public function searchVideo(string $search): array
     {
         return $this->cloud->search($search);
+    }
+
+
+
+    public function searchByLink(string $link) {
+        return $this->cloud->searchByLink($link);
     }
 
 

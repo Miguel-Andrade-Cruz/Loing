@@ -12,10 +12,24 @@ class Parser
         
         preg_match('~\/[\w]+\/[\w]+\/([\w\d]+)~', $roughPath, $matches);
         $id = $matches[1] ?? false;
+        $haveQueries = isset($roughUriData['query']);
         
-        $stringQueries = $roughUriData['query'] ?? false;
-        
-        $queriesPair = ! $stringQueries ? [] : explode('&', $stringQueries);
+        if ( $id ) {
+            $routePath = str_replace($id, '{id}', $roughUriData['path']);
+        }
+
+        $queriesPair = [];
+        if ( ! $haveQueries ) {
+            return [
+                'route path' => $routePath,
+                'id' => $id,
+                'queries' => false
+            ];
+    
+        }
+
+        $queriesPair = explode('&', $roughUriData['query']);
+        $routePath .= "?{query}";
         
         $queries = [];
         foreach ( $queriesPair as $param => $queriePair ) {
@@ -24,19 +38,10 @@ class Parser
             
         }
         
-        $queries = empty($queries) ? false : $queries;
-        
-
-        if ( $id ) {
-            $routePath = str_replace($id, '{id}/', $roughUriData['path']);
-        }
-
-        $uriData = [
+        return [
             'route path' => $routePath,
             'id' => $id,
             'queries' => $queries
         ];
-
-        return $uriData;
     }
 }

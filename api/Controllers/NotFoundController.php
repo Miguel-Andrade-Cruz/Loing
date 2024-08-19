@@ -12,7 +12,7 @@ class NotFoundController
     {
         $response_info = [
             'Status Message' => 'Error',
-            'Warning' => 'Path not found'
+            'Warning' => 'Path not found, try checking the queries or endpoints'
         ];
 
         $response::Response($response_info, 404);

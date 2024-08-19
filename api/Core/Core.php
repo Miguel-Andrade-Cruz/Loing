@@ -4,9 +4,7 @@ namespace Minuz\Api\Core;
 
 use Minuz\Api\Http\Requester;
 use Minuz\Api\Http\Responser;
-use Minuz\Api\Http\Router;
 use Minuz\Api\Tools\Parser;
-use Minuz\Api\Tools\URISequence;
 
 class Core
 {
