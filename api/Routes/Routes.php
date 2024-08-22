@@ -2,7 +2,7 @@
 
 use Minuz\Api\Http\Router;
 
-Router::post('/acess/login', 'AcessController||login');
+Router::get('/acess/login', 'AcessController||login');
 Router::put('/acess/signup', 'AcessController||signup');
 Router::delete('/acess/logout', 'AcessController||logout');
 
