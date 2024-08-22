@@ -4,40 +4,37 @@ namespace Minuz\Api\Tools;
 
 class Parser
 {
-    public static function treatURI(string $uri): array
+    public static function parseURI(string $uri): array
     {
         $roughUriData = parse_url($uri);
-        $roughPath = $roughUriData['path'];
         $routePath = $roughUriData['path'];
         
-        preg_match('~\/[\w]+\/[\w]+\/([\w\d]+)~', $roughPath, $matches);
+        preg_match('~\/[\w]+\/[\w]+\/([\w\d]+)~', $routePath, $matches);
         $id = $matches[1] ?? false;
-        $haveQueries = isset($roughUriData['query']);
         
         if ( $id ) {
-            $routePath = str_replace($id, '{id}', $roughUriData['path']);
+            $routePath = str_replace($id, '{id}', $routePath);
         }
-
-        $queriesPair = [];
-        if ( ! $haveQueries ) {
+        
+        if ( ! isset($roughUriData['query'])) { 
+            return [
+                'route path' => $routePath,
+                'id' => $id,
+                'queries' => []
+            ];
+        }
+        
+        if ( empty($roughUriData['query']) ) {
             return [
                 'route path' => $routePath,
                 'id' => $id,
                 'queries' => false
             ];
-    
         }
-
-        $queriesPair = explode('&', $roughUriData['query']);
+        
+        parse_str($roughUriData['query'], $queries);
+        
         $routePath .= "?{query}";
-        
-        $queries = [];
-        foreach ( $queriesPair as $param => $queriePair ) {
-            [$param, $value] = explode('=', $queriePair);
-            $queries[$param] = $value;
-            
-        }
-        
         return [
             'route path' => $routePath,
             'id' => $id,

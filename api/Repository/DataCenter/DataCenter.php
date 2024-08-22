@@ -63,7 +63,7 @@ class DataCenter
 
 
 
-    public function searchByLink(string $link): array {
+    public function searchByLink(string $link): array|bool {
         $stmt = self::$pdo->prepare(self::$SEARCH_BY_LINK_QUERY);
 
         $stmt->execute([
@@ -71,12 +71,16 @@ class DataCenter
         ]);
         $videoData = $stmt->fetch(\PDO::FETCH_ASSOC);
 
+        if ( ! $videoData ) {
+            return false;
+        }
+
         $rating = new Rating($videoData['likes'], $videoData['dislikes']);
         $video = new Video(
             $videoData['Title'],
             $videoData['Content'],
-            $videoData['Link'],
             $videoData['Channel'],
+            $videoData['Link'],
             $rating
         );
 

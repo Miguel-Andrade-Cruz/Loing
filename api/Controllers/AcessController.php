@@ -55,6 +55,7 @@ class AcessController
         
         if ( ! $acc ) {
             $this->accountAlreadyExistsProcess($response);
+            return;
         }
         
         $this->saveSession($data['email'], $acc->nickName);
@@ -74,7 +75,7 @@ class AcessController
             'Warning' => 'None'
         ];
         
-        $response::Response($responseData, 200);
+        $response::Response(200);
     }
 
 
@@ -92,15 +93,13 @@ class AcessController
     private function sucessfulLoginProcess(Responser $response, Account $acc): void
     {
         $responseData = [
-            'Status Message' => 'Ok',
-            'Warning' => 'None',
             'Data' => [
                 'nickname' => $acc->nickName,
                 'email' => $acc->email()
             ]
         ];
         
-        $response::Response($responseData, 200);
+        $response::Response(200, data: $responseData);
         return;
     }
 
@@ -108,12 +107,7 @@ class AcessController
 
     private function wrongLoginProcess(Responser $response): void
     {
-        $responseData = [
-            'Status Message' => 'Error',
-            'Warning' => 'Incorect Email or password.'
-        ];
-        
-        $response::Response($responseData, 400);
+        $response::Response(400, 'Error', 'Incorrect email or password');
         return;
     }
 
@@ -121,13 +115,7 @@ class AcessController
 
     private function wrongEmailFormatProcess(Responser $response): void
     {
-        $responseData = [
-            'Status Message' => 'Error',
-            'Warning' => 'Incorrect email format, please insert a valid email.'
-        ];
-
-        $response::Response($responseData, 401);
-
+        $response::Response(401, 'Error', 'Incorrect email format, please insert a valid email.');
         return;
     }
 
@@ -135,13 +123,7 @@ class AcessController
 
     private function accountAlreadyExistsProcess(Responser $response): void
     {
-        $responseData = [
-            'Status message' => 'Issue',
-            'Warning' => 'Account already exists with this email'
-        ];
-        
-        $response::Response($responseData, 409);
+        $response::Response(409, 'Issue', 'Account already exists with this email');
         return;
-
     }
 }

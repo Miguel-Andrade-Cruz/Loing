@@ -14,9 +14,14 @@ class Core
 
         $uri = Requester::path();
 
-        $uriData = Parser::treatURI($uri);
+        $uriData = Parser::parseURI($uri);
         
-        $route = $uriData['route path']; 
+        $route = $uriData['route path'];
+
+        if ( $uriData['queries'] === false ) {
+            Responser::Response(400, 'Error', 'Malformed uri');
+            return;
+        }
 
         if ( ! array_key_exists($route, $routes) ) {
             $controllerClass = $prefixController . 'NotFoundController';
@@ -27,17 +32,11 @@ class Core
         }
         $route = $routes[$route];
 
-
         if( Requester::method() != $route['method'] ) {
-            $responseData = [
-                'Status Message' => 'Error',
-                'Warning' => 'Method not allowed.'
-            ];
             
-            Responser::Response($responseData, 405);
+            Responser::Response(405, 'Error', 'Method not allowed');
             return;
         }
-
 
         [$controllerClass, $action] = explode('||', $route['action']);
 

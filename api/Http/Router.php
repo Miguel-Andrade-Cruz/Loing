@@ -27,6 +27,16 @@ class Router
 
 
 
+    public static function put(string $path, string $action)
+    {
+        self::$routes[$path] = [
+            'method' => 'PUT',
+            'action' => $action,
+        ];
+    }
+
+
+
     public static function delete(string $path, string $action)
     {
         self::$routes[$path] = [

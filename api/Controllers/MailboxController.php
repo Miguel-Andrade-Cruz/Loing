@@ -27,7 +27,7 @@ class MailboxController
             'Warning' => 'None',
             'Data' => $emails
         ];
-        $response::Response($responseData, 200);
+        $response::Response(200, 'None', 'Ok', $emails);
     }
     
     
@@ -50,7 +50,7 @@ class MailboxController
             'Warning' => 'None',
             'Info' => 'Email sended sucessfully'
         ];
-        $response::Response($responseData, 201);
+        $response::Response(201, 'None', 'Email sended sucessfully');
         return;
     }
 
@@ -62,7 +62,7 @@ class MailboxController
             'Status Message' => 'Error',
             'Warning' => 'You need to login before use your email.'
         ];
-        $response::Response($responseData, 401);
+        $response::Response(401, 'None', 'You need to login before use your email');
         return;
     }
 }

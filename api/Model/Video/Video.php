@@ -14,7 +14,7 @@ class Video
         string $link,
         public Rating $rating = new Rating()
     ) {
-        $this->link = "www.loing.com/videos/" . $link;
+        $this->link = $link;
     }
 
 

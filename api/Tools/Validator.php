@@ -14,6 +14,17 @@ class Validator
     }
 
 
+    public static function HaveValues(array $data, array $checklist): array
+    {
+        $markedChecklist = [];
+        foreach( $checklist as $checklistItem) {
+            $markedChecklist[$checklistItem] = isset($data[$checklistItem]) ? true : false;
+        }
+        
+        return $markedChecklist;
+    }
+
+
 
     public static function HaveNullVaLues(array $data): bool
     {

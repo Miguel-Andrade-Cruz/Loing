@@ -15,6 +15,6 @@ class NotFoundController
             'Warning' => 'Path not found, try checking the queries or endpoints'
         ];
 
-        $response::Response($response_info, 404);
+        $response::Response(404, 'Error', 'Path not found, try checking the queries or endpoints');
     }
 }

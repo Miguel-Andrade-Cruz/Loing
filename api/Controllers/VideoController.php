@@ -23,6 +23,13 @@ class VideoController
             return;
         }
 
+        $queries = Validator::HaveValues($searchQueries, ['q']);
+        
+        if ( ! $searchQueries['q'] ) {
+            $this->emptySearchProcess($response);
+            return;
+        }
+
         $acc = new Account($_SESSION['email'], $_SESSION['nickname']);
         $videosFound = $acc->searchVideo($searchQueries['q']);
         
@@ -46,7 +53,7 @@ class VideoController
 
         $acc = new Account($_SESSION['email'], $_SESSION['nickname']);
 
-        $video = $acc->searchByLink($link);
+        $video = $acc->searchByLink("www.loing.com/videos/$link");
         
         if ( ! $video ) {
             $this->videoNotFoundProcess($response);
@@ -92,12 +99,7 @@ class VideoController
 
     private function uploadCompletedProcess(Responser $response): void
     {
-        $responseData = [
-            'Status message' => 'Video uploaded',
-            'Warining' => 'None',
-        ];
-
-        $response::Response($responseData, 201);
+        $response::Response(201, message: 'Video uploaded');
         
         return;
     }
@@ -106,13 +108,7 @@ class VideoController
 
     private function uploadErrorProcess(Responser $response): void
     {
-        $responseData = [
-            'Status message' => 'Cannot upload: Malformed video or empty fields',
-            'Warining' => 'Error',
-        ];
-
-        $response::Response($responseData, 400);
-        
+        $response::Response(400, 'Error', 'Cannot upload: Malformed video or empty fields');
         return;
     }
 
@@ -120,13 +116,7 @@ class VideoController
 
     private function videoSearchedProcess(Responser $response, array $videosFound)
     {
-        $responseData = [
-            'Status message' => 'None',
-            'Warning' => 'None',
-            'Data' => $videosFound
-        ];
-
-        $response::Response($responseData, 400);
+        $response::Response(200, data: $videosFound);
         return;
     }
 
@@ -134,23 +124,23 @@ class VideoController
 
     private function videoNotFoundProcess(Responser $response)
     {
-        $responseData = [
-            'Status message' => 'Video not found',
-            'Warning' => 'Issue',
-        ];
-
-        $response::Response($responseData, 400);
+        $response::Response(400, 'Issue', 'Video not found');
         return;
     }
 
 
+
     private function loginRequiredProcess(Responser $response): void
     {
-        $responseData = [
-            'Status Message' => 'Error',
-            'Warning' => 'You need to login before search for videos.'
-        ];
-        $response::Response($responseData, 401);
+        $response::Response(401, 'Error', 'You need to login before search for videos.');
+        return;
+    }
+
+
+
+    private function emptySearchProcess(Responser $response)
+    {
+        $response::Response(401, 'Eror', 'Empty field of search');
         return;
     }
 }
