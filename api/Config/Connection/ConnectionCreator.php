@@ -1,7 +1,7 @@
 <?php
 namespace Minuz\Api\Config\Connection;
 
-require_once './DB_Connection';
+require_once __DIR__ . '/DB_Connection.php';
 
 class ConnectionCreator
 {
