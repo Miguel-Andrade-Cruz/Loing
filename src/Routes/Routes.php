@@ -4,7 +4,7 @@ use Minuz\Api\Http\Router;
 
 Router::get('/acess/login', 'AcessController||login');
 Router::put('/acess/signup', 'AcessController||signup');
-Router::delete('/acess/logout', 'AcessController||logout');
+Router::get('/acess/logout', 'AcessController||logout');
 
 Router::get('/mailbox/inbox', 'MailboxController||inbox');
 Router::post('/mailbox/send', 'MailboxController||send');
