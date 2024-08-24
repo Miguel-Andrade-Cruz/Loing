@@ -11,20 +11,12 @@ class ComposerStaticInit5dd91d109b7f2976c34fa726c6427b8a
         array (
             'Minuz\\Api\\' => 10,
         ),
-        'D' => 
-        array (
-            'Ds\\' => 3,
-        ),
     );
 
     public static $prefixDirsPsr4 = array (
         'Minuz\\Api\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/src',
-        ),
-        'Ds\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/php-ds/php-ds/src',
+            0 => __DIR__ . '/../..' . '/Src',
         ),
     );
 
