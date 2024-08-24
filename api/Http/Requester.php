@@ -13,7 +13,7 @@ class Requester
             return ['email' => $email, 'password' => $password];
         }
 
-        return false;
+        return ['email' => '', 'password' => ''];
     }
 
 

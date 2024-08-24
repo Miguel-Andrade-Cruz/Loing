@@ -20,8 +20,6 @@ class AcessController
     {
 
         $data = $request::auth();
-        $data = Validator::HydrateNulls($data, '');
-        
         
         if ( ! filter_var($data['email'], FILTER_VALIDATE_EMAIL) ) {
             $this->wrongEmailFormatProcess($response);
