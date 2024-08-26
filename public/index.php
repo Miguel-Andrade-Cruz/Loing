@@ -7,8 +7,3 @@ use Minuz\Api\Core\Core;
 use Minuz\Api\Http\Router;
 
 Core::dispatch(Router::$routes);
-
-{
-    "Warning": "None",
-    "Status message": "You are now loged in"
-}
