@@ -9,28 +9,25 @@ use Minuz\Api\Model\Video\Video;
 use Minuz\Api\Tools\LinkGenerator;
 use Minuz\Api\Tools\Validator;
 
-session_start();
 
-class VideoController
+class VideoController extends LoginRequiredController
 {
     public function __construct() { }
 
 
     public function search(Requester $request, Responser $response, string $id = null, array $searchQueries): void
     {
-        if ( ! isset($_SESSION['email'], $_SESSION['nickname']) ) {
-            $this->loginRequiredProcess($response);
-            return;
-        }
-
-        $queries = Validator::HaveValues($searchQueries, ['q']);
-        
-        if ( ! $searchQueries['q'] ) {
+        $validQueries = Validator::HaveValues($searchQueries, ['q']);
+        if ( ! $validQueries['q'] ) {
             $this->emptySearchProcess($response);
             return;
         }
 
-        $acc = new Account($_SESSION['email'], $_SESSION['nickname']);
+        if ( ! $session = $this->loginSession($request, $response) ) {
+            return;
+        }
+
+        $acc = new Account($session->email, $session->nickname);
         $videosFound = $acc->searchVideo($searchQueries['q']);
         
         if( empty($videosFound) ) {
@@ -47,7 +44,7 @@ class VideoController
     public function link(Requester $request, Responser $response, string $link): void
     {
         if ( ! isset($_SESSION['email'], $_SESSION['nickname']) ) {
-            $this->loginRequiredProcess($response);
+            $this->failedLoginProcess($response);
             return;
         }
 
@@ -69,7 +66,7 @@ class VideoController
     public function publish(Requester $request, Responser $response): void
     {
         if ( ! isset($_SESSION['email'], $_SESSION['nickname']) ) {
-            $this->loginRequiredProcess($response);
+            $this->failedLoginProcess($response);
             return;
         }
 
@@ -130,7 +127,7 @@ class VideoController
 
 
 
-    private function loginRequiredProcess(Responser $response): void
+    private function failedLoginProcess(Responser $response): void
     {
         $response::Response(401, 'Error', 'You need to login before search for videos.');
         return;

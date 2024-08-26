@@ -12,7 +12,9 @@
             "email": "angelium.eddra1972@gmail.com"
         }
     ],
-    "require": {},
+    "require": {
+        "firebase/php-jwt": "^6.10"
+    },
 
     "scripts": {
         "start": "php -S localhost:8080 -t Public/"

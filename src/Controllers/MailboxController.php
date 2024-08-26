@@ -8,8 +8,9 @@ use Minuz\Api\Http\{Requester, Responser};
 
 use Minuz\Api\Model\Account\Account;
 use Minuz\Api\Tools\Validator;
+use Minuz\Api\Controllers\LoginRequiredController;
 
-class MailboxController
+class MailboxController extends LoginRequiredController
 {
     public function inbox(Requester $request, Responser $response)
     {
