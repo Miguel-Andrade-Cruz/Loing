@@ -26,14 +26,10 @@ class Requester
         $authHeader = $headers['Authorization'];
         
         if ( 0 == preg_match('~Bearer\s(\S+)~', $authHeader, $matches) ) {
-            print_r($matches);
             return false;
         }
         
         $token = $matches[1];
-        $token = str_replace('Bearer ', '', $token);
-        
-        
 
         return $token;
     }
