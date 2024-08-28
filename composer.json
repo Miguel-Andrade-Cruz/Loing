@@ -13,7 +13,8 @@
         }
     ],
     "require": {
-        "firebase/php-jwt": "^6.10"
+        "firebase/php-jwt": "^6.10",
+        "php-ds/php-ds": "^1.5"
     },
 
     "scripts": {

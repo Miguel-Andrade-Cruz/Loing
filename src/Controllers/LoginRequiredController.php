@@ -34,14 +34,14 @@ abstract class LoginRequiredController
             return false;
         }
 
-
         return $session;
     }
 
 
+
     private function loginFailedProcess(Responser $response): void
     {
-        $response::Response(400, 'None', "Your session login falied, please make a new login");
+        $response::Response(400, 'Error', "Your session login falied, please make a new login");
         return;
     }
 }

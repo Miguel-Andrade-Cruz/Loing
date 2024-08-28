@@ -43,8 +43,7 @@ class VideoController extends LoginRequiredController
 
     public function link(Requester $request, Responser $response, string $link): void
     {
-        if ( ! isset($_SESSION['email'], $_SESSION['nickname']) ) {
-            $this->failedLoginProcess($response);
+        if ( ! $session = $this->loginSession($request, $response) ) {
             return;
         }
 
@@ -65,8 +64,7 @@ class VideoController extends LoginRequiredController
 
     public function publish(Requester $request, Responser $response): void
     {
-        if ( ! isset($_SESSION['email'], $_SESSION['nickname']) ) {
-            $this->failedLoginProcess($response);
+        if ( ! $session = $this->loginSession($request, $response) ) {
             return;
         }
 
@@ -122,14 +120,6 @@ class VideoController extends LoginRequiredController
     private function videoNotFoundProcess(Responser $response)
     {
         $response::Response(400, 'Issue', 'Video not found');
-        return;
-    }
-
-
-
-    private function failedLoginProcess(Responser $response): void
-    {
-        $response::Response(401, 'Error', 'You need to login before search for videos.');
         return;
     }
 

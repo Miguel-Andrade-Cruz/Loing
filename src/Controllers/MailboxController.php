@@ -14,11 +14,10 @@ class MailboxController extends LoginRequiredController
 {
     public function inbox(Requester $request, Responser $response)
     {
-        if ( ! isset($_SESSION['email']) ) {
-            $this->loginRequiredProcess($response);
+        if ( ! $session = $this->loginSession($request, $response) ) {
             return;
         }
-        
+
         $acc = new Account($_SESSION['email'], $_SESSION['nickname']);
         
         $emails = $acc->viewAllMails();
@@ -35,8 +34,7 @@ class MailboxController extends LoginRequiredController
     
     public function send(Requester $request, Responser $response)
     {
-        if ( ! isset($_SESSION['email']) ) {
-            $this->loginRequiredProcess($response);
+        if ( ! $session = $this->loginSession($request, $response) ) {
             return;
         }
         
@@ -55,15 +53,4 @@ class MailboxController extends LoginRequiredController
         return;
     }
 
-
-
-    private function loginRequiredProcess(Responser $response): void
-    {
-        $responseData = [
-            'Status Message' => 'Error',
-            'Warning' => 'You need to login before use your email.'
-        ];
-        $response::Response(401, 'None', 'You need to login before use your email');
-        return;
-    }
 }

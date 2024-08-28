@@ -14,6 +14,7 @@ class Validator
     }
 
 
+
     public static function HaveValues(array $data, array $checklist): array
     {
         $markedChecklist = [];

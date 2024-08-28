@@ -2,9 +2,6 @@
 
 namespace Minuz\Api\Http;
 
-use Firebase\JWT\JWT;
-use Minuz\Api\JWK\JWK;
-
 class Responser
 {
     public static function Response(int $code, string $warning = 'None', string $message = 'None', array $data = [], ?string $jwt = null)
@@ -15,7 +12,7 @@ class Responser
         }
         
         $data = array_merge(
-            $data, ['Warning' => $warning, 'Status message' => $message]
+            ['Warning' => $warning, 'Status message' => $message], $data
         );
         
         $json = json_encode($data);

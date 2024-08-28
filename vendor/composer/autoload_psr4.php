@@ -8,4 +8,5 @@ $baseDir = dirname($vendorDir);
 return array(
     'Minuz\\Api\\' => array($baseDir . '/Src'),
     'Firebase\\JWT\\' => array($vendorDir . '/firebase/php-jwt/src'),
+    'Ds\\' => array($vendorDir . '/php-ds/php-ds/src'),
 );
