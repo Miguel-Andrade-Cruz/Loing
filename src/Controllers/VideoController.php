@@ -111,7 +111,7 @@ class VideoController extends LoginRequiredController
 
     private function videoSearchedProcess(Responser $response, array $videosFound)
     {
-        $response::Response(200, data: $videosFound);
+        $response::Response(200, data: ['Data' => $videosFound]);
         return;
     }
 
