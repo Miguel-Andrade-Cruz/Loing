@@ -16,7 +16,7 @@ abstract class LoginRequiredController
 {
     public function loginSession(Requester $request, Responser $response): \stdClass|bool
     {
-        if ( ! isset($_SESSION['session']) || empty($_SESSION['session'])) {
+        if ( ! isset($_SESSION['session']) ) {
             $this->loginFailedProcess($response);
             return false;
         }
