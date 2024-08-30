@@ -21,6 +21,7 @@ class AcessController
         
         if ( ! $data ) {
             $this->emptyLoginProcess($response);
+            return;
         }
 
         if ( ! filter_var($data['email'], FILTER_VALIDATE_EMAIL) ) {
