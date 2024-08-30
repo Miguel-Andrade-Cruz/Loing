@@ -19,6 +19,10 @@ class AcessController
     {
         $data = $request::auth();
         
+        if ( ! $data ) {
+            $this->emptyLoginProcess($response);
+        }
+
         if ( ! filter_var($data['email'], FILTER_VALIDATE_EMAIL) ) {
             $this->wrongEmailFormatProcess($response);
             return;
@@ -100,5 +104,12 @@ class AcessController
     {
         $response::Response(409, 'Issue', 'Account already exists with this email');
         return;
+    }
+
+
+
+    private function emptyLoginProcess(Responser $response)
+    {
+        $response::Response(401, 'Empty fields', 'Empty email or password fields');
     }
 }

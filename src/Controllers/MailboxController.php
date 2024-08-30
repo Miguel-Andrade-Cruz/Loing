@@ -17,15 +17,9 @@ class MailboxController extends LoginRequiredController
         }
 
         $acc = new Account($session->email, $session->nickname);
-        
         $emails = $acc->viewAllMails();
         
-        $responseData = [
-            'Status Message' => 'Ok',
-            'Warning' => 'None',
-            'Data' => $emails
-        ];
-        $response::Response(200, 'None', 'Ok', $emails);
+        $response::Response(200, 'None', 'Ok', ['Data' => $emails]);
     }
     
     
@@ -42,12 +36,7 @@ class MailboxController extends LoginRequiredController
         
         $acc->sendMail($data['reciever'], $data['text'], $data['date']);
 
-        $responseData = [
-            'Status message' => 'Ok',
-            'Warning' => 'None',
-            'Info' => 'Email sended sucessfully'
-        ];
-        $response::Response(201, 'None', 'Email sended sucessfully');
+        $response::Response(201, 'None', 'Email sent sucessfully');
         return;
     }
 

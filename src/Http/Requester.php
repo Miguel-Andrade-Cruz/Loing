@@ -6,13 +6,14 @@ class Requester
 {
     public static function auth(): array|false
     {
-        if (isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW'])) {
+        $headers = getallheaders();
+        if ( isset($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']) ) {
             $email = $_SERVER['PHP_AUTH_USER'];
             $password = $_SERVER['PHP_AUTH_PW'];
 
             return ['email' => $email, 'password' => $password];
         }
-        return ['email' => '', 'password' => ''];
+        return false;
     }
 
 
