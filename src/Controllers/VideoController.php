@@ -47,7 +47,7 @@ class VideoController extends LoginRequiredController
             return;
         }
 
-        $acc = new Account($_SESSION['email'], $_SESSION['nickname']);
+        $acc = new Account($session->email, $session->nickname);
 
         $video = $acc->searchByLink("www.loing.com/videos/$link");
         
@@ -76,7 +76,7 @@ class VideoController extends LoginRequiredController
         }
 
 
-        $acc = new Account($_SESSION['email'], $_SESSION['nickname']);
+        $acc = new Account($session->email, $session->nickname);
         $video = new Video(
             $data['Title'],
             $data['Content'],
@@ -86,15 +86,15 @@ class VideoController extends LoginRequiredController
 
         $acc->publish($video);
 
-        $this->uploadCompletedProcess($response);
+        $this->uploadCompletedProcess($response, $video);
         return;
     }
 
 
 
-    private function uploadCompletedProcess(Responser $response): void
+    private function uploadCompletedProcess(Responser $response, Video $video): void
     {
-        $response::Response(201, message: 'Video uploaded');
+        $response::Response(201, 'None', 'Video uploaded', ['video link' => $video->link]);
         
         return;
     }

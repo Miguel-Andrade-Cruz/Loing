@@ -16,13 +16,13 @@ abstract class LoginRequiredController
 {
     public function loginSession(Requester $request, Responser $response): \stdClass|bool
     {
-        if ( ! isset($_SESSION['savedSession']) || empty($_SESSION['savedSession'])) {
+        if ( ! isset($_SESSION['session']) || empty($_SESSION['session'])) {
             $this->loginFailedProcess($response);
             return false;
         }
         $requestSession =  $request::session();
         
-        if ( ! $requestSession == $_SESSION['savedSession'] ) {
+        if ( ! $requestSession == $_SESSION['session'] ) {
             $this->loginFailedProcess($response);
             return false;
         }

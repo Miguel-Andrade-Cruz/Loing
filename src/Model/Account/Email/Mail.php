@@ -13,7 +13,7 @@ class Mail
         private string $text,
                 string $date
     ) {
-        $this->date = \DateTimeImmutable::createFromFormat('d/m/Y', $date);
+        $this->date = new \DateTimeImmutable($date);
     }
 
 

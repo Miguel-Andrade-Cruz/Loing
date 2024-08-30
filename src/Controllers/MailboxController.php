@@ -2,8 +2,6 @@
 
 namespace Minuz\Api\Controllers;
 
-session_start();
-
 use Minuz\Api\Http\{Requester, Responser};
 
 use Minuz\Api\Model\Account\Account;
@@ -18,7 +16,7 @@ class MailboxController extends LoginRequiredController
             return;
         }
 
-        $acc = new Account($_SESSION['email'], $_SESSION['nickname']);
+        $acc = new Account($session->email, $session->nickname);
         
         $emails = $acc->viewAllMails();
         
@@ -40,7 +38,7 @@ class MailboxController extends LoginRequiredController
         
         $data = $request::body();
         $data = Validator::HydrateNulls($data, '');
-        $acc = new Account($_SESSION['email'], $_SESSION['nickname']);
+        $acc = new Account($session->email, $session->nickname);
         
         $acc->sendMail($data['reciever'], $data['text'], $data['date']);
 

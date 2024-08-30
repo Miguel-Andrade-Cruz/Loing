@@ -30,7 +30,6 @@ class Requester
         }
         
         $token = $matches[1];
-
         return $token;
     }
 
