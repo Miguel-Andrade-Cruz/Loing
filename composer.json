@@ -14,7 +14,8 @@
     ],
     "require": {
         "firebase/php-jwt": "^6.10",
-        "php-ds/php-ds": "^1.5"
+        "php-ds/php-ds": "^1.5",
+        "vlucas/phpdotenv": "^5.6"
     },
 
     "scripts": {

@@ -1,12 +1,18 @@
 <?php
 namespace Minuz\Api\Config\Connection;
 
-require_once __DIR__ . '/DB_Connection.php';
 
 class ConnectionCreator
 {
     public static function connect(): \PDO
     {
-        return new \PDO('mysql:LoingDB=loingdb;host=127.0.0.1', USER, PASSWORD);
+        $dsn = sprintf('%s:host=%s;port=%s;dbname=%s;charset=utf8',
+            $_ENV['DB_CONNECTION'],
+            $_ENV['DB_HOST'],
+            $_ENV['DB_PORT'],
+            $_ENV['DB_DATABASE'],
+        );
+        
+        return new \PDO($dsn, $_ENV['DB_USER'], $_ENV['DB_PASS']);
     }
 }

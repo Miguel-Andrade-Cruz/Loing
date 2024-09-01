@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  php:
+    build:
+      context: .
+      dockerfile: php/Dockerfile
+    volumes:
+      - ./public:/var/www/html
+    networks:
+      - app-network
+
+  ngnix:
+    image: nginx:alpine
+    volumes:
+      - ./public:/var/www/html
+    ports:
+      - "8080:80"
+    networks:
+      - app-network
+
+networks:
+  app-network:
