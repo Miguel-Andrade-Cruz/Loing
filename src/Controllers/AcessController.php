@@ -4,9 +4,10 @@ namespace Minuz\Api\Controllers;
 
 use Firebase\JWT\JWT;
 use Minuz\Api\Http\{Requester, Responser};
-use Minuz\Api\JWK\JWK;
 use Minuz\Api\Model\Account\Account;
 use Minuz\Api\Repository\Safe\Safe;
+use Minuz\Api\Services\Auth;
+use Minuz\Api\Statements\Statements;
 
 session_start();
 
@@ -17,25 +18,24 @@ class AcessController
 
     public function login(Requester $request, Responser $response): void
     {
-        $data = $request::auth();
+        $login = Auth::Login($request::auth());
         
-        if ( ! $data ) {
+        if ( $login == Statements::$LOGIN_EMPTY ) {
             $this->emptyLoginProcess($response);
             return;
         }
 
-        if ( ! filter_var($data['email'], FILTER_VALIDATE_EMAIL) ) {
+        if ( $login == Statements::$INVALID_EMAIL_FORMAT ) {
             $this->wrongEmailFormatProcess($response);
             return;
         }
         
-        $acc = self::$safe->Login($data['email'], $data['password']);
-        if ( ! $acc ) {
+        if ( $login == Statements::$INVALID_LOGIN ) {
             $this->wrongLoginProcess($response);
             return;
         }
         
-        $this->sucessfulLoginProcess($response, $acc);        
+        $this->sucessfulLoginProcess($response, $login);        
         return;
     }
     
@@ -43,20 +43,21 @@ class AcessController
     
     public function signup(Requester $request, Responser $response)
     {
-        $data = $request::body();
-        
-        if ( ! filter_var($data['email'], FILTER_VALIDATE_EMAIL) ) {
+        $signin = Auth::Signup($request::body());
+        if ( $signin == Statements::$LOGIN_EMPTY ) {
+            $this->emptyLoginProcess($response);
+            return;
+        }
+        if ( $signin == Statements::$INVALID_EMAIL_FORMAT ) {
             $this->wrongEmailFormatProcess($response);
             return;
         }
-        
-        $acc = self::$safe->Signup($data['nickname'], $data['email'], $data['password']);
-        if ( ! $acc ) {
+        if ( $signin == Statements::$ACCOUNT_ALREADY_EXISTS ) {
             $this->accountAlreadyExistsProcess($response);
             return;
         }
 
-        $this->sucessfulLoginProcess($response, $acc);
+        $this->sucessfulLoginProcess($response, $signin);
         return;
     }
 

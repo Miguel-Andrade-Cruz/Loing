@@ -4,6 +4,7 @@ namespace Minuz\Api\Repository\Safe;
 
 use Minuz\Api\Config\Connection\ConnectionCreator;
 use Minuz\Api\Model\Account\Account;
+use Minuz\Api\Statements\Statements;
 
 class Safe
 {
@@ -17,7 +18,7 @@ class Safe
 
 
 
-    public function Login(string $email, string $password): Account|false
+    public function Login(string $email, string $password): Account|string
     {
         $stmt = self::$pdo->prepare(self::$LOGIN_QUERY);
         $stmt->execute([
@@ -27,7 +28,7 @@ class Safe
 
         $accData = $stmt->fetch(\PDO::FETCH_ASSOC);
         if ( ! $accData ) {
-            return false;
+            return Statements::$INVALID_LOGIN;
         }
         
         return new Account($accData['email'], $accData['nickname']);
@@ -35,7 +36,7 @@ class Safe
 
 
 
-    public function SignUp(string $nickName, string $email, string $password): Account|false
+    public function SignUp(string $nickName, string $email, string $password): Account|string
     {
         $stmt = self::$pdo->prepare(self::$SIGN_UP_CHECK_QUERY);
         $stmt->execute([':email' => $email]);
@@ -43,7 +44,7 @@ class Safe
         $checking = $checking['checking'];
 
         if ( $checking == 1 ) {
-            return false;
+            return Statements::$ACCOUNT_ALREADY_EXISTS;
         }
 
         self::$pdo->prepare(self::$SIGN_UP_QUERY)

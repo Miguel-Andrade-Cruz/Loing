@@ -1,18 +1,21 @@
 <?php
-
 namespace Minuz\Api\Controllers;
 
 use Minuz\Api\Http\Requester;
 use Minuz\Api\Http\Responser;
+
 use Minuz\Api\Model\Account\Account;
 use Minuz\Api\Model\Video\Video;
+
 use Minuz\Api\Tools\LinkGenerator;
 use Minuz\Api\Tools\Parse;
 
+use Minuz\Api\Services\Auth;
+use Minuz\Api\Statements\Statements;
 
-class VideoController extends LoginRequiredController
+
+class VideoController
 {
-    public function __construct() { }
 
 
     public function search(Requester $request, Responser $response, string $id = null, array $searchQueries): void
@@ -23,7 +26,13 @@ class VideoController extends LoginRequiredController
             return;
         }
 
-        if ( ! $session = $this->loginSession($request, $response) ) {
+        $session = Auth::SessionLogin();
+        
+        $isInvalidToken = $session == Statements::$INVALID_LOGIN_TOKEN;
+        $isOtherToken = $session == Statements::$OTHER_LOGIN_TOKEN;
+        $isLoginExpired = $session == Statements::$LOGIN_EXPIRED;
+        
+        if ( $isInvalidToken || $isOtherToken || $isLoginExpired ) {
             return;
         }
 
@@ -43,7 +52,13 @@ class VideoController extends LoginRequiredController
 
     public function link(Requester $request, Responser $response, string $link): void
     {
-        if ( ! $session = $this->loginSession($request, $response) ) {
+        $session = Auth::SessionLogin();
+        
+        $isInvalidToken = $session == Statements::$INVALID_LOGIN_TOKEN;
+        $isOtherToken = $session == Statements::$OTHER_LOGIN_TOKEN;
+        $isLoginExpired = $session == Statements::$LOGIN_EXPIRED;
+        
+        if ( $isInvalidToken || $isOtherToken || $isLoginExpired ) {
             return;
         }
 
@@ -64,7 +79,13 @@ class VideoController extends LoginRequiredController
 
     public function publish(Requester $request, Responser $response): void
     {
-        if ( ! $session = $this->loginSession($request, $response) ) {
+        $session = Auth::SessionLogin();
+        
+        $isInvalidToken = $session == Statements::$INVALID_LOGIN_TOKEN;
+        $isOtherToken = $session == Statements::$OTHER_LOGIN_TOKEN;
+        $isLoginExpired = $session == Statements::$LOGIN_EXPIRED;
+        
+        if ( $isInvalidToken || $isOtherToken || $isLoginExpired ) {
             return;
         }
 
@@ -88,6 +109,13 @@ class VideoController extends LoginRequiredController
 
         $this->uploadCompletedProcess($response, $video);
         return;
+    }
+
+
+
+    private function IsLoggedCheckining()
+    {
+        
     }
 
 

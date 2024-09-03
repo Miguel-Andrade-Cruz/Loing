@@ -6,7 +6,6 @@ class Requester
 {
     public static function auth(): array|false
     {
-        $headers = getallheaders();
         if ( isset($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']) ) {
             $email = $_SERVER['PHP_AUTH_USER'];
             $password = $_SERVER['PHP_AUTH_PW'];

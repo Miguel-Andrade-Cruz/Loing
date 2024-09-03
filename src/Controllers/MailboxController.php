@@ -5,14 +5,21 @@ namespace Minuz\Api\Controllers;
 use Minuz\Api\Http\{Requester, Responser};
 
 use Minuz\Api\Model\Account\Account;
-use Minuz\Api\Tools\Validator;
-use Minuz\Api\Controllers\LoginRequiredController;
+use Minuz\Api\Services\Auth;
+use Minuz\Api\Statements\Statements;
+use Minuz\Api\Tools\Parse;
 
-class MailboxController extends LoginRequiredController
+class MailboxController
 {
     public function inbox(Requester $request, Responser $response)
     {
-        if ( ! $session = $this->loginSession($request, $response) ) {
+        $session = Auth::SessionLogin();
+        
+        $isInvalidToken = $session == Statements::$INVALID_LOGIN_TOKEN;
+        $isOtherToken = $session == Statements::$OTHER_LOGIN_TOKEN;
+        $isLoginExpired = $session == Statements::$LOGIN_EXPIRED;
+        
+        if ( $isInvalidToken || $isOtherToken || $isLoginExpired ) {
             return;
         }
 
@@ -26,12 +33,19 @@ class MailboxController extends LoginRequiredController
     
     public function send(Requester $request, Responser $response)
     {
-        if ( ! $session = $this->loginSession($request, $response) ) {
+        $session = Auth::SessionLogin();
+        
+        $isInvalidToken = $session == Statements::$INVALID_LOGIN_TOKEN;
+        $isOtherToken = $session == Statements::$OTHER_LOGIN_TOKEN;
+        $isLoginExpired = $session == Statements::$LOGIN_EXPIRED;
+        
+        if ( $isInvalidToken || $isOtherToken || $isLoginExpired ) {
             return;
         }
+
         
         $data = $request::body();
-        $data = Validator::HydrateNulls($data, '');
+        Parse::HydrateNulls($data, '');
         $acc = new Account($session->email, $session->nickname);
         
         $acc->sendMail($data['reciever'], $data['text'], $data['date']);
