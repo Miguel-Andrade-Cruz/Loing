@@ -28,7 +28,7 @@ abstract class LoginRequiredController
         }
         
         try {
-            $session = JWT::decode($requestSession, new Key(JWK::JWT_KEY, 'HS256'));
+            $session = JWT::decode($requestSession, new Key($_ENV['JWT_KEY'], 'HS256'));
         } catch (UnexpectedValueException $e) {
             $this->loginFailedProcess($response);
             return false;

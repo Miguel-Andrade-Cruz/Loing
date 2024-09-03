@@ -7,7 +7,7 @@ use Minuz\Api\Http\Responser;
 use Minuz\Api\Model\Account\Account;
 use Minuz\Api\Model\Video\Video;
 use Minuz\Api\Tools\LinkGenerator;
-use Minuz\Api\Tools\Validator;
+use Minuz\Api\Tools\Parse;
 
 
 class VideoController extends LoginRequiredController
@@ -17,7 +17,7 @@ class VideoController extends LoginRequiredController
 
     public function search(Requester $request, Responser $response, string $id = null, array $searchQueries): void
     {
-        $validQueries = Validator::HaveValues($searchQueries, ['q']);
+        $validQueries = Parse::HaveValues($searchQueries, ['q']);
         if ( ! $validQueries['q'] ) {
             $this->emptySearchProcess($response);
             return;
@@ -70,7 +70,7 @@ class VideoController extends LoginRequiredController
 
         $data = $request::body();
 
-        if ( Validator::HaveNullVaLues($data) ) {
+        if ( Parse::HaveNullVaLues($data) ) {
             $this->uploadErrorProcess($response);
             return;
         }

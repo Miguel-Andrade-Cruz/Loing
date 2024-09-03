@@ -77,7 +77,7 @@ class AcessController
             'nickname' => $acc->nickName
         ];
         
-        $token = JWT::encode($responseData, JWK::JWT_KEY, 'HS256');
+        $token = JWT::encode($responseData, $_ENV['JWT_KEY'], 'HS256');
         $_SESSION['session'] = $token;
         $response::Response(200, 'None', "You are now loged in", ['Token' => $token, 'Expire at' => 'Logout']);
         return;

@@ -4,7 +4,7 @@ namespace Minuz\Api\Core;
 
 use Minuz\Api\Http\Requester;
 use Minuz\Api\Http\Responser;
-use Minuz\Api\Tools\Parser;
+use Minuz\Api\Tools\Detacher;
 
 class Core
 {
@@ -12,21 +12,16 @@ class Core
     {
         $prefixController = 'Minuz\\Api\\Controllers\\';
 
-        $uri = Requester::path();
+        $url = Requester::path();
 
-        $uriData = Parser::parseURI($uri);
+        Detacher::Detach($url, $urlData);
         
-        $route = $uriData['route path'];
-
-        if ( $uriData['queries'] === false ) {
-            Responser::Response(400, 'Error', 'Malformed uri');
-            return;
-        }
+        $route = $urlData['path'];
 
         if ( ! array_key_exists($route, $routes) ) {
             $controllerClass = $prefixController . 'NotFoundController';
             $controller = new $controllerClass();
-            
+        
             $controller->index(new Requester, new Responser);
             return;
         }
@@ -43,7 +38,7 @@ class Core
         $controllerClass = $prefixController . $controllerClass;
         $controller = new $controllerClass();
 
-        $controller->$action(new Requester, new Responser, $uriData['id'], $uriData['queries']);
+        $controller->$action(new Requester, new Responser, $urlData['id'], $urlData['query']);
 
         return;
     }

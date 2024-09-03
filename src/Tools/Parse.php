@@ -2,15 +2,16 @@
 
 namespace Minuz\Api\Tools;
 
-class Validator
+class Parse
 {
-    public static function HydrateNulls(array $data, mixed $filling): array
+    public static function HydrateNulls(array &$data, mixed $filling): void
     {
         $filler = function ($item) use ($filling) {
             return is_null($item) ? $filling : $item;
         };
 
-        return array_map($filler, $data);
+        $data = array_map($filler, $data);
+        return;
     }
 
 
