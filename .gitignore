@@ -2,3 +2,4 @@ src/Config/Connection/DB_Connection.php
 .env
 nginx/certs/server.crt
 nginx/certs/server.key
+nginx/nginx.conf

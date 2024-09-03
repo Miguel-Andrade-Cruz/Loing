@@ -8,8 +8,7 @@ class Responser
     {
         header('Content-type: application/json', response_code: $code);
         header("Access-Control-Allow-Origin: *");
-        header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
-        header("Access-Control-Allow-Headers: Authorization, Content-Type");
+
 
         if (  $jwt != null ) {
             header("Authorization: Bearer $jwt");

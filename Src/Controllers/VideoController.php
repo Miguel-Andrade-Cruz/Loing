@@ -16,8 +16,6 @@ use Minuz\Api\Statements\Statements;
 
 class VideoController
 {
-
-
     public function search(Requester $request, Responser $response, string $id = null, array $searchQueries): void
     {
         $validQueries = Parse::HaveValues($searchQueries, ['q']);
