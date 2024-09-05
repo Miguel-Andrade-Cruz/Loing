@@ -1,5 +1,4 @@
-src/Config/Connection/DB_Connection.php
-.env
+app/.env
 nginx/certs/server.crt
 nginx/certs/server.key
 nginx/nginx.conf
