@@ -3,7 +3,7 @@
     "description": "Simple streaming app",
     "autoload": {
         "psr-4": {
-            "Minuz\\Api\\": "Src/"
+            "Minuz\\Api\\": "app/Src/"
         }
     },
     "authors": [
@@ -19,7 +19,7 @@
     },
 
     "scripts": {
-        "start": "php -S localhost:8080 -t Public/"
+        "start": "php -S localhost:8080 -t app/Public/"
     }    
 
 }

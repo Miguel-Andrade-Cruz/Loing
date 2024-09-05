@@ -61,7 +61,7 @@ class ComposerStaticInit5dd91d109b7f2976c34fa726c6427b8a
         ),
         'Minuz\\Api\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/Src',
+            0 => __DIR__ . '/../..' . '/app/Src',
         ),
         'GrahamCampbell\\ResultType\\' => 
         array (
