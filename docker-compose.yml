@@ -1,6 +1,17 @@
 services:
+  mysql:
+    container_name: mysql-server
+    build:
+      context: ./
+      dockerfile: mysql/Dockerfile
+    ports:
+      - "3300:3306"
+    networks:
+      - app-network
+
+
   php:
-    container_name: php-container
+    container_name: php-server
     build:
       context: ./
       dockerfile: php/Dockerfile
@@ -8,6 +19,9 @@ services:
       - ./app:/var/www/html 
     networks:
       - app-network
+    depends_on:
+      - mysql
+
 
   ngnix:
     container_name: nginx-server
@@ -20,6 +34,9 @@ services:
       - app-network
     depends_on:
       - php
+
+
+
 
 networks:
   app-network:

@@ -1,0 +1,8 @@
+FROM mysql:8.0
+
+ENV MYSQL_ROOT_PASSWORD=365491
+ENV MYSQL_DATABASE=LoingDB
+ENV MYSQL_USER=LoingUser
+ENV MYSQL_PASSWORD=365491
+
+COPY mysql/scripts/ /docker-entrypoint-initdb.d/
