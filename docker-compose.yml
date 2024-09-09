@@ -4,8 +4,6 @@ services:
     build:
       context: ./
       dockerfile: mysql/Dockerfile
-    ports:
-      - "3300:3306"
     networks:
       - app-network
 
@@ -15,8 +13,6 @@ services:
     build:
       context: ./
       dockerfile: php/Dockerfile
-    volumes:
-      - ./app:/var/www/html 
     networks:
       - app-network
     depends_on:
@@ -29,12 +25,11 @@ services:
       context: ./
       dockerfile: nginx/Dockerfile
     ports:
-      - "8081:80"
+      - "8081:8081"
     networks:
       - app-network
     depends_on:
       - php
-
 
 
 

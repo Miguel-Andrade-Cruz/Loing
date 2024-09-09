@@ -9,12 +9,13 @@ use Minuz\Api\Repository\Safe\Safe;
 use Minuz\Api\Services\Auth;
 use Minuz\Api\Statements\Statements;
 
-session_start();
 
 class AcessController
 {
-    private static Safe $safe;
-    public function __construct() { self::$safe = new Safe(); }
+    public function __construct()
+    {
+        
+    }
 
     public function login(Requester $request, Responser $response): void
     {

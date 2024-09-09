@@ -2,8 +2,8 @@
 namespace Minuz\Api\Services;
 
 use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
 
+use Firebase\JWT\Key;
 use Minuz\Api\Http\Requester;
 use Minuz\Api\Http\Responser;
 
@@ -11,6 +11,7 @@ use Minuz\Api\Model\Account\Account;
 use Minuz\Api\Repository\Safe\Safe;
 use Minuz\Api\Statements\Statements;
 
+session_start();
 class Auth
 {
     public static function Login(array|bool $auth): Account|string
@@ -23,8 +24,9 @@ class Auth
         if ( ! filter_var($auth['email'], FILTER_VALIDATE_EMAIL) ) {
             return Statements::$INVALID_EMAIL_FORMAT;
         }
-
+        
         $acc = $safe->Login($auth['email'], $auth['password']);
+        $_SESSION['session'] = JWT::encode($auth, $_ENV['JWT_KEY'], 'HS256');
         return $acc;
     }
 
@@ -54,7 +56,7 @@ class Auth
             return Statements::$LOGIN_EXPIRED;
         }
         
-        $requestSession =  Requester::session();
+        $requestSession = Requester::session();
         if ( ! $requestSession == $_SESSION['session'] ) {
             self::loginFailedProcess();
             return Statements::$OTHER_LOGIN_TOKEN;
@@ -71,7 +73,7 @@ class Auth
     }
 
 
-    
+
     private static function loginFailedProcess(): void
     {
         Responser::Response(400, 'Error', "Your session login falied, please make a new login");
