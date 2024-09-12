@@ -21,17 +21,17 @@ class AcessController
     {
         $login = Auth::Login($request::auth());
         
-        if ( $login == Statements::$LOGIN_EMPTY ) {
+        if ( $login == Statements::LOGIN_EMPTY ) {
             $this->emptyLoginProcess($response);
             return;
         }
 
-        if ( $login == Statements::$INVALID_EMAIL_FORMAT ) {
+        if ( $login == Statements::INVALID_EMAIL_FORMAT ) {
             $this->wrongEmailFormatProcess($response);
             return;
         }
         
-        if ( $login == Statements::$INVALID_LOGIN ) {
+        if ( $login == Statements::INVALID_LOGIN ) {
             $this->wrongLoginProcess($response);
             return;
         }
@@ -45,15 +45,15 @@ class AcessController
     public function signup(Requester $request, Responser $response)
     {
         $signin = Auth::Signup($request::body());
-        if ( $signin == Statements::$LOGIN_EMPTY ) {
+        if ( $signin == Statements::LOGIN_EMPTY ) {
             $this->emptyLoginProcess($response);
             return;
         }
-        if ( $signin == Statements::$INVALID_EMAIL_FORMAT ) {
+        if ( $signin == Statements::INVALID_EMAIL_FORMAT ) {
             $this->wrongEmailFormatProcess($response);
             return;
         }
-        if ( $signin == Statements::$ACCOUNT_ALREADY_EXISTS ) {
+        if ( $signin == Statements::ACCOUNT_ALREADY_EXISTS ) {
             $this->accountAlreadyExistsProcess($response);
             return;
         }

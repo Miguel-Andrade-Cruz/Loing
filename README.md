@@ -23,3 +23,4 @@ Making the content get from different sides of the internet (like Alura, Youtube
 | `/videos/publish`| POST | Title, content |
 | `/mail/inbox`| GET | No |
 | `/mail/send`| POST | Reciever, date, text   |
+

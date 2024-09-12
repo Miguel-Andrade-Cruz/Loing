@@ -24,17 +24,16 @@ class VideoController
             return;
         }
 
-        $session = Auth::SessionLogin();
         
-        $isInvalidToken = $session == Statements::$INVALID_LOGIN_TOKEN;
-        $isOtherToken = $session == Statements::$OTHER_LOGIN_TOKEN;
-        $isLoginExpired = $session == Statements::$LOGIN_EXPIRED;
-        
-        if ( $isInvalidToken || $isOtherToken || $isLoginExpired ) {
+        $sessionIsActive = Auth::SessionLogin();
+        if ( $sessionIsActive instanceof Statements ) {
+            
+            $response::Response(400, 'Login failed', $sessionIsActive);
             return;
         }
 
-        $acc = new Account($session->email, $session->nickname);
+
+        $acc = new Account($sessionIsActive->email, $sessionIsActive->nickname);
         $videosFound = $acc->searchVideo($searchQueries['q']);
         
         if( empty($videosFound) ) {
@@ -50,17 +49,14 @@ class VideoController
 
     public function link(Requester $request, Responser $response, string $link): void
     {
-        $session = Auth::SessionLogin();
-        
-        $isInvalidToken = $session == Statements::$INVALID_LOGIN_TOKEN;
-        $isOtherToken = $session == Statements::$OTHER_LOGIN_TOKEN;
-        $isLoginExpired = $session == Statements::$LOGIN_EXPIRED;
-        
-        if ( $isInvalidToken || $isOtherToken || $isLoginExpired ) {
+        $sessionIsActive = Auth::SessionLogin();
+        if ( $sessionIsActive instanceof Statements ) {
+            
+            $response::Response(400, 'Login failed', $sessionIsActive);
             return;
         }
 
-        $acc = new Account($session->email, $session->nickname);
+        $acc = new Account($sessionIsActive->email, $sessionIsActive->nickname);
 
         $video = $acc->searchByLink("www.loing.com/videos/$link");
         
@@ -77,13 +73,10 @@ class VideoController
 
     public function publish(Requester $request, Responser $response): void
     {
-        $session = Auth::SessionLogin();
-        
-        $isInvalidToken = $session == Statements::$INVALID_LOGIN_TOKEN;
-        $isOtherToken = $session == Statements::$OTHER_LOGIN_TOKEN;
-        $isLoginExpired = $session == Statements::$LOGIN_EXPIRED;
-        
-        if ( $isInvalidToken || $isOtherToken || $isLoginExpired ) {
+        $sessionIsActive = Auth::SessionLogin();
+        if ( $sessionIsActive instanceof Statements ) {
+            
+            $response::Response(400, 'Login failed', $sessionIsActive);
             return;
         }
 
@@ -95,7 +88,7 @@ class VideoController
         }
 
 
-        $acc = new Account($session->email, $session->nickname);
+        $acc = new Account($sessionIsActive->email, $sessionIsActive->nickname);
         $video = new Video(
             $data['Title'],
             $data['Content'],
@@ -111,10 +104,26 @@ class VideoController
 
 
 
-    private function IsLoggedCheckining()
+    public function library(Requester $request, Responser $response)
     {
+        $sessionIsActive = Auth::SessionLogin();
+        if ( $sessionIsActive instanceof Statements ) {
+            
+            $response::Response(400, 'Login failed', $sessionIsActive);
+            return;
+        }
+        $acc =  new Account($sessionIsActive->email, $sessionIsActive->nickname);
         
+        $videos = $acc->library();
+        if ( ! $videos ) {
+            $this->videoNotFoundProcess($response);
+            return;
+        }
+    
+        $response::Response(200, data: $videos);
+        return;
     }
+
 
 
 

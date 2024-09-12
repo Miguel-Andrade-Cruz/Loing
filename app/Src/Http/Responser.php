@@ -2,9 +2,11 @@
 
 namespace Minuz\Api\Http;
 
+use Minuz\Api\Statements\Statements;
+
 class Responser
 {
-    public static function Response(int $code, string $warning = 'None', string $message = 'None', array $data = [], ?string $jwt = null)
+    public static function Response(int $code, string $warning = 'None', string|Statements $message = 'None', array $data = [], ?string $jwt = null)
     {
         header('Content-type: application/json', response_code: $code);
         header("Access-Control-Allow-Origin: *");

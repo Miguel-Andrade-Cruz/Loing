@@ -63,4 +63,13 @@ class Account
     {
         $this->email->sendMail($reciever, $text, $date);
     }
+
+
+
+    public function library(): array
+    {
+        $videos = $this->cloud->searchByChannel($this->nickName);
+
+        return $videos;
+    }
 }

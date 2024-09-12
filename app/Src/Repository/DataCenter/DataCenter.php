@@ -63,6 +63,37 @@ class DataCenter
 
 
 
+    public function searchByChannel(string $channel): array|bool
+    {
+        $stmt = self::$pdo->prepare(self::$SEARCH_BY_CHANNEL_QUERY);
+        $stmt->execute([
+            ':channel' => $channel
+        ]);
+
+        $videosFound = [];
+        while ($videoData = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            $rating = new Rating($videoData['likes'], $videoData['dislikes']);
+            $video = new Video(
+                $videoData['Title'],
+                $videoData['Content'],
+                $videoData['Channel'],
+                $videoData['Link'],
+                $rating
+            );
+            $videosFound[] = [
+                'Title' => $video->title,
+                'Content' => $video->content,
+                'Channel' => $video->channel,
+                'Link' => $video->link,
+                'Rating' => $video->rating->viewRating()
+            ];
+        }
+
+        return $videosFound;
+    }
+
+
+
     public function searchByLink(string $link): array|bool {
         $stmt = self::$pdo->prepare(self::$SEARCH_BY_LINK_QUERY);
 
@@ -160,4 +191,28 @@ class DataCenter
     ;
     "
     ;
-    }
+
+
+    private static string $SEARCH_BY_CHANNEL_QUERY = 
+    "
+    SELECT
+        videos.Title,
+        videos.Channel,
+        videos.Link,    
+        videos.Content,
+	    videos.Views,
+        rating.likes,
+        rating.dislikes
+        
+    FROM
+	    loingdb.videos videos
+    LEFT JOIN
+	    loingdb.rating rating
+    ON
+	    rating.link = videos.Link
+        
+    WHERE
+        videos.Channel = :channel
+    ;
+    ";
+}
