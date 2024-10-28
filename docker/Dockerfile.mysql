@@ -5,4 +5,4 @@ ENV MYSQL_DATABASE=LoingDB
 ENV MYSQL_USER=LoingUser
 ENV MYSQL_PASSWORD=365491
 
-COPY mysql/scripts/ /docker-entrypoint-initdb.d/
+COPY ../mysql/scripts/ /docker-entrypoint-initdb.d/

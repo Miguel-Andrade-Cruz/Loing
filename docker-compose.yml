@@ -2,8 +2,8 @@ services:
   mysql:
     container_name: mysql-server
     build:
-      context: ./
-      dockerfile: mysql/Dockerfile
+      context: ./docker
+      dockerfile: Dockerfile.mysql
     networks:
       - app-network
 
@@ -11,8 +11,8 @@ services:
   php:
     container_name: php-server
     build:
-      context: ./
-      dockerfile: php/Dockerfile
+      context: ./docker
+      dockerfile: Dockerfile.php
     networks:
       - app-network
     depends_on:
@@ -22,8 +22,8 @@ services:
   ngnix:
     container_name: nginx-server
     build:
-      context: ./
-      dockerfile: nginx/Dockerfile
+      context: ./docker
+      dockerfile: Dockerfile.nginx
     ports:
       - "8081:8081"
     networks:

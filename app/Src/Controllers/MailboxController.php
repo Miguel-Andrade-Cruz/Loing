@@ -15,9 +15,9 @@ class MailboxController
     {
         $session = Auth::SessionLogin();
         
-        $isInvalidToken = $session == Statements::$INVALID_LOGIN_TOKEN;
-        $isOtherToken = $session == Statements::$OTHER_LOGIN_TOKEN;
-        $isLoginExpired = $session == Statements::$LOGIN_EXPIRED;
+        $isInvalidToken = $session == Statements::INVALID_LOGIN_TOKEN;
+        $isOtherToken = $session == Statements::OTHER_LOGIN_TOKEN;
+        $isLoginExpired = $session == Statements::LOGIN_EXPIRED;
         
         if ( $isInvalidToken || $isOtherToken || $isLoginExpired ) {
             return;
@@ -35,9 +35,9 @@ class MailboxController
     {
         $session = Auth::SessionLogin();
         
-        $isInvalidToken = $session == Statements::$INVALID_LOGIN_TOKEN;
-        $isOtherToken = $session == Statements::$OTHER_LOGIN_TOKEN;
-        $isLoginExpired = $session == Statements::$LOGIN_EXPIRED;
+        $isInvalidToken = $session == Statements::INVALID_LOGIN_TOKEN;
+        $isOtherToken = $session == Statements::OTHER_LOGIN_TOKEN;
+        $isLoginExpired = $session == Statements::LOGIN_EXPIRED;
         
         if ( $isInvalidToken || $isOtherToken || $isLoginExpired ) {
             return;
